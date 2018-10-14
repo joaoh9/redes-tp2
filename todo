@@ -1,0 +1,79 @@
+Roteador DCCRIP usando soquetes UDP:
+    ☐ Roteamento por vetor de distância
+    ☐ Pesos nos enlaces
+    ☐ Balanceamento de carga
+    ☐ Medição de rotas
+    ☐ etc
+
+Cada roteador associado (bind) a um IP local:
+    ☐ Subrede 127.0.1.0/24
+    ☐ Interface loopback (lo)
+    ☐ Soquete UDP associado ao respectivo endereço
+
+Entradas linha de comando:
+  ☐ Configuração da topologia virtual
+  ☐ Pesos serão importante no algoritmo de decisão de rotas mais curtas
+    add <ip> <weight>:
+        ☐ um enlace virtual entre o roteador corrente e o roteador associado ao endereco <ip>
+        ☐ do enlace = <weight>
+    del <ip>:
+        ☐ Remove enlace virtual entre roteador corrente e o endereco <ip>
+
+Codificacao de mensagens:
+    ☐ Baixar biblioteca para json
+    mensagens com pelo menos 3 campos:
+        ☐ source: IP do programa que originou a mensagem
+        ☐ destination: IP do programa destinatário da mensagem
+        ☐ type: 
+            ☐ data
+                ☐ caompo adiciona payload com um string qualquer
+                ☐ Imprimir na tela o payload de todas as mensagens que receber
+            ☐ update
+                ☐ mensagem de atualização de rotas para vizinhos
+                ☐ campo adicional distances com um dicionário
+                    ☐ <vizinho do roteador atual> - <distancia até ele>
+                ☐ enviar mensagens de update a cada π segundos
+                ☐ mensagens enviadas ao vizinho x nao devem incluir rotas para x nem rotas aprendidas de x
+            ☐ trace
+                ☐ campo adicional hops que armazena a lista de roteadores por onde a mensagem já passou
+                ☐ roteador deve adicionar seu ip ao final do campo hops da mensagem
+                ☐ verificar se é destino final do trace
+                    ☐ se for
+                        ☐ enviar mensagem data para o roteador que originou o trace
+                        ☐ com payload sendo o campo hops do da mensagem trace
+                    ☐ se não
+                        ☐ continuar encaminhamento pela rota mais curta
+
+Balanceamento de Carga:
+    ☐ Se múltiplas rotas estiverem empatadas com a menor distância até um destino
+    ☐ Roteador deve dividir o tráfego entre as rotas uniformemente
+        ☐ 2 rotas com mesma distância: 50% do tráfego em cada rota
+        ☐ 3 rotas com mesam distância: 33% do tráfego em cada rota
+        ☐ ... assim por diante ...
+
+Reroteamento Imediato:
+    ☐ Quando a rota mais curta deixar de existir
+    ☐ Enviar mensagem na segunda rota mais curta
+
+Remoção de Rotas Desatualizadas:
+    ☐ Remover da tabela de roteamento rotas que não forem informadas pelo update
+    ☐ Em um período de tempo igual a 4π
+
+Inicialização:
+    ☐ ./router.py <addr> <period> [startup]
+        ☐ addr: endereco de ip para fazer o bin
+        ☐ period: tempo π para envio das mensagens de update
+        ☐ startup: nome do arquivo contendo comandos para adicionar links
+    ☐ Alternativamente, seu roteador pode receber os parâmetros ADDR,PERIOD e STARTUP atravésde opções de linha de comando chamadas --addr,--update-period e --startup-commands, respectivamente (como na implementação do professor)
+    ☐ Todos roteadores devem usar a porta 55151 para comunicação
+
+Execução e terminação:
+    ☐ Sempre ler comandos de teclado e proucurar por comandos add, del e trace
+    ☐ quit para terminar o programa
+    ☐ Cada roteador só deve imprimir na saída padrão o payload de mensagens de dados endereçadas a ele
+
+Duvidas:
+    ☐ precisa fazer bind pra cada novo endereco adicionado?
+    ☐ o que é essa interface loopback?
+    ☐ nao entendi como as opções de linha de comando podem ser implementadas e pra que servem
+    ☐ Devemos criar um arquivo para leitura e envio de mensagens semelhante ao último tp?
