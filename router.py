@@ -7,9 +7,7 @@ routes = []
 def add_route(receiver, distance):
     index = -1
     for i in range(len(routes)):
-        print("Checking " + receiver + " is " + str(routes[i][0]))
         if receiver == routes[i][0]:
-            print("True")
             index = i
             break
     if index is -1:
