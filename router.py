@@ -1,20 +1,20 @@
 import sys
 import threading
+import json
+import re
 
-routes = []
+routes = {}
 
 
-def add_route(receiver, distance):
-    index = -1
-    for i in range(len(routes)):
-        if receiver == routes[i][0]:
-            index = i
-            break
-    if index is -1:
-        routes.append([receiver, [[receiver, distance]]])
+def add_link(receiver, distance):
+    if receiver not in routes:
+        routes[receiver] = [[receiver, distance]]
     else:
-        routes[index][1].append([receiver, distance])
-        routes[index][1].sort(key=lambda x: x[1])
+        for i in range(len(routes[receiver])):
+            if receiver == routes[receiver][i][0]:
+                print("Route " + receiver + " already added.")
+                return
+        routes[receiver].append[[receiver, distance]]
     print("Added route to " + receiver + " with distance " + str(distance))
 
 
@@ -31,13 +31,18 @@ def prompt():
         if len(cmd) is 0:
             continue
         elif cmd[0] == "add":
-            add_route(cmd[1], int(cmd[2]))
+            add_link(cmd[1], int(cmd[2]))
         elif cmd[0] == "del":
             print("Run del")
         elif cmd[0] == "trace":
             print("Run trace")
         elif cmd[0] == "status":
-            print(str(routes))
+            # print(json.dumps(routes, sort_keys=True, indent=4))
+            output = json.dumps(routes, sort_keys=True, indent=4)
+            output2 = re.sub(r'": \[\s+', '": [', output)
+            output3 = re.sub(r'",\s+', '", ', output2)
+            output4 = re.sub(r'"\s+\]', '"]', output3)
+            print(output4)
         elif cmd[0] == "quit":
             break
         else:
