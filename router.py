@@ -2,6 +2,7 @@ import sys
 import threading
 import json
 import re
+import socket
 
 routes = {}
 
@@ -58,6 +59,10 @@ def main():
         startup = sys.argv[3]
         startup_file = open(startup, "r")
         print("Startup file name: " + startup)
+
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind((addr, port))
 
     t_prompt = threading.Thread(target=prompt, args=())
     t_prompt.start()
