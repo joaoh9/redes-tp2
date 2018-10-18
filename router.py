@@ -7,8 +7,14 @@ import socket
 routes = {}
 PORT = 55151
 addr = None
+package = []
 
-def add_link(receiver, distance, sock):
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((sys.argv[1], PORT))
+print("Address: " + sys.argv[1])
+
+
+def add_link(receiver, distance):
     if receiver not in routes:
         routes[receiver] = [[receiver, distance]]
     else:
@@ -27,15 +33,16 @@ def del_enlace(enlace):
     print("Del enlace")
 
 
-def prompt(sock, addr):
+def prompt(addr):
     while 1:
         s = input("> ")
         cmd = s.split()
         if len(cmd) is 0:
             continue
         elif cmd[0] == "add":
-            add_link(cmd[1], int(cmd[2]), sock)
+            add_link(cmd[1], int(cmd[2]))
         elif cmd[0] == "del":
+            del_link(cmd[1])
             print("Run del")
         elif cmd[0] == "trace":
             print("Run trace")
@@ -55,35 +62,47 @@ def prompt(sock, addr):
         else:
             print("Command not found")
 
-#def send_data(data, sock, dest):
-#    json.dumps({"type": "data", "source": addr, "destination": dest , "payload": data})
+def send_package(dest, package):
+    msg = json.dumps(pacote)
+    message = bytes(msg, 'utf-8')
+    udp.sendto(message, (dest, PORT))
+
+def recv_package(package):
+    while True:
+        msg, ip = sock.recvfrom(1024)
+        if len(msg) > 0:
+            msg = bytes.decode(msg)
+            message = json.loads(msg)
+            treat_package(message)
+
+def treat_package(message):
+    if message['type'] == "data":
+        print ('data')
+    if message['type'] == "trace":
+        print ('trace')
+    if message['type'] == "update":
+        print ('update')
 
 
-def listen(sock):
-    sock.listen()
-    udpsock, addr = sock.accept()
-    print ('Connected to router ' + str(addr))
-    #while 1:
-    data = udpsock.recv(1024)
+read_file(startup_file):
+    print('read file')
+
 
 def main():
-    addr = sys.argv[1]
-    print("Address: " + addr)
+
     period = int(sys.argv[2])
     print("Period: " + str(period))
+    
+    # --startup-comands
     if len(sys.argv) > 3:
         startup = sys.argv[3]
         startup_file = open(startup, "r")
-        print("Startup file name: " + startup)
-
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind((addr, PORT))
+        read_file(startup_file)
     
-    t_prompt = threading.Thread(target=prompt, kwargs={'sock': sock, 'addr': addr})
+    t_prompt = threading.Thread(target=prompt, kwargs={'addr': addr})
     t_prompt.start()
 
-    t_listen = threading.Thread(target=listen, kwargs={'sock': sock})
+    t_listen = threading.Thread(target=recv_package, kwargs={'package': package})
     t_listen.start()
 
     t_prompt.join()
