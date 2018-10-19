@@ -3,15 +3,11 @@ import threading
 import json
 import re
 import socket
+from colorama import Fore
+
+PORT = 55151
 
 routes = {}
-PORT = 55151
-addr = None
-package = []
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((sys.argv[1], PORT))
-print("Address: " + sys.argv[1])
 
 
 def add_link(receiver, distance):
@@ -23,19 +19,38 @@ def add_link(receiver, distance):
                 print("Route " + receiver + " already added.")
                 return
         routes[receiver].append[[receiver, distance]]
-        sock.connect((receiver, PORT))
     print("Added route to " + receiver + " with distance " + str(distance))
 
 
-def del_enlace(enlace):
+def del_link(enlace):
     # ip = enlace[1]
     # ....
     print("Del enlace")
 
 
-def prompt(addr):
+def get_destination(destination):
+    return routes[destination][0][0]
+
+
+def create_data_packet(destination, messsage):
+    return {
+        "type": "data",
+        "source": ADDR,
+        "destination": destination,
+        "payload": messsage
+    }
+
+
+def send_packet(packet):
+    destination = packet['destination']
+    json_packet = json.dumps(packet)
+    message = bytes(json_packet, 'utf-8')
+    SOCK.sendto(message, (destination, PORT))
+
+
+def prompt():
     while 1:
-        s = input("> ")
+        s = input()
         cmd = s.split()
         if len(cmd) is 0:
             continue
@@ -52,28 +67,31 @@ def prompt(addr):
             output2 = re.sub(r'": \[\s+', '": [', output)
             output3 = re.sub(r'",\s+', '", ', output2)
             output4 = re.sub(r'"\s+\]', '"]', output3)
-            print(output4)
-        elif cmd[0] == "data":
-            data = cmd[1]
-            dest = cmd[2]
-            send_data(data, sock, addr)
+            print(Fore.RED + output4)
+        elif cmd[0] == "msg":
+            if len(cmd) < 2:
+                print("Too few arguments for msg")
+                continue
+            receiver = cmd[1]
+            message = cmd[2]
+            packet = create_data_packet(receiver, message)
+            send_packet(packet)
+        elif cmd[0] == "help":
+            print("add del trace data help quit")
         elif cmd[0] == "quit":
             break
         else:
             print("Command not found")
 
-def send_package(dest, package):
-    msg = json.dumps(pacote)
-    message = bytes(msg, 'utf-8')
-    udp.sendto(message, (dest, PORT))
 
-def recv_package(package):
+def recv_package():
     while True:
-        msg, ip = sock.recvfrom(1024)
+        msg, ip = SOCK.recvfrom(1024)
         if len(msg) > 0:
             msg = bytes.decode(msg)
             message = json.loads(msg)
             treat_package(message)
+
 
 def treat_package(message):
     if message['type'] == "data":
@@ -84,11 +102,19 @@ def treat_package(message):
         print ('update')
 
 
-read_file(startup_file):
+def read_file(startup_file):
     print('read file')
 
 
 def main():
+
+    global SOCK
+    SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    SOCK.bind((sys.argv[1], PORT))
+
+    global ADDR
+    ADDR = sys.argv[1]
+    print("Address: " + ADDR)
 
     period = int(sys.argv[2])
     print("Period: " + str(period))
@@ -98,12 +124,12 @@ def main():
         startup = sys.argv[3]
         startup_file = open(startup, "r")
         read_file(startup_file)
-    
-    t_prompt = threading.Thread(target=prompt, kwargs={'addr': addr})
-    t_prompt.start()
 
-    t_listen = threading.Thread(target=recv_package, kwargs={'package': package})
+    t_listen = threading.Thread(target=recv_package)
     t_listen.start()
+    
+    t_prompt = threading.Thread(target=prompt)
+    t_prompt.start()
 
     t_prompt.join()
     
