@@ -8,6 +8,24 @@ from colorama import Fore
 PORT = 55151
 
 routes = {}
+"""
+{
+    "127.0.1.2: {
+        "tie": 2,
+        "min": 20,
+        "next": 0,
+        "options": [
+            {
+                "destination":
+                "distance":
+                "is_link": True,
+                "timestamp": 
+                "learned_from":
+            }
+        ]
+    }
+}
+"""
 
 
 def add_link(receiver, distance):
