@@ -4,40 +4,9 @@ import json
 import re
 import socket
 from colorama import Fore
+from Table import Table
 
 PORT = 55151
-
-routes = {}
-"""
-{
-    "127.0.1.2: {
-        "tie": 2,
-        "min": 20,
-        "next": 0,
-        "options": [
-            {
-                "destination":
-                "distance":
-                "is_link": True,
-                "timestamp": 
-                "learned_from":
-            }
-        ]
-    }
-}
-"""
-
-
-def add_link(receiver, distance):
-    if receiver not in routes:
-        routes[receiver] = [[receiver, distance]]
-    else:
-        for i in range(len(routes[receiver])):
-            if receiver == routes[receiver][i][0]:
-                print("Route " + receiver + " already added.")
-                return
-        routes[receiver].append[[receiver, distance]]
-    print("Added route to " + receiver + " with distance " + str(distance))
 
 
 def del_link(enlace):
@@ -46,46 +15,60 @@ def del_link(enlace):
     print("Del enlace")
 
 
-def get_destination(destination):
-    return routes[destination][0][0]
-
-
-def create_data_packet(destination, messsage):
+def create_data_packet(destination, message):
+    """
+    Create a dictionary with data in a packet to be send.
+    :param destination: Router destination IP address.
+    :type destination: str
+    :param message: Text message to be sent.
+    :type message: str
+    :return: Dictionary.
+    :rtype: dict
+    """
     return {
         "type": "data",
         "source": ADDR,
         "destination": destination,
-        "payload": messsage
+        "payload": message
     }
 
 
 def send_packet(packet):
-    destination = packet['destination']
+    """
+    Send a dict packet to a router.
+    :param packet: Dict packet with info.
+    :type packet: dict
+    """
+    destination = table.get_destination_by_routes(packet['destination'])
     json_packet = json.dumps(packet)
     message = bytes(json_packet, 'utf-8')
     SOCK.sendto(message, (destination, PORT))
 
 
 def prompt():
+    """
+    Read commands and select the right function.
+    """
     while 1:
         s = input()
         cmd = s.split()
         if len(cmd) is 0:
             continue
         elif cmd[0] == "add":
-            add_link(cmd[1], int(cmd[2]))
+            if len(cmd) < 3:
+                print("Too few arguments for msg")
+                continue
+            # add_link(cmd[1], int(cmd[2]))
+            print("add link")
+            # print("min " + str(table.min))
+            table.add_link(cmd[1], int(cmd[2]))
         elif cmd[0] == "del":
             del_link(cmd[1])
             print("Run del")
         elif cmd[0] == "trace":
             print("Run trace")
         elif cmd[0] == "status":
-            # print(json.dumps(routes, sort_keys=True, indent=4))
-            output = json.dumps(routes, sort_keys=True, indent=4)
-            output2 = re.sub(r'": \[\s+', '": [', output)
-            output3 = re.sub(r'",\s+', '", ', output2)
-            output4 = re.sub(r'"\s+\]', '"]', output3)
-            print(Fore.RED + output4)
+            print(table.to_string())
         elif cmd[0] == "msg":
             if len(cmd) < 2:
                 print("Too few arguments for msg")
@@ -94,6 +77,7 @@ def prompt():
             message = cmd[2]
             packet = create_data_packet(receiver, message)
             send_packet(packet)
+            print("send msg")
         elif cmd[0] == "help":
             print("add del trace data help quit")
         elif cmd[0] == "quit":
@@ -136,6 +120,9 @@ def main():
 
     period = int(sys.argv[2])
     print("Period: " + str(period))
+
+    global table
+    table = Table()
     
     # --startup-comands
     if len(sys.argv) > 3:
@@ -143,8 +130,8 @@ def main():
         startup_file = open(startup, "r")
         read_file(startup_file)
 
-    t_listen = threading.Thread(target=recv_package)
-    t_listen.start()
+    t_recv = threading.Thread(target=recv_package)
+    t_recv.start()
     
     t_prompt = threading.Thread(target=prompt)
     t_prompt.start()
