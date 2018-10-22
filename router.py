@@ -3,7 +3,6 @@ import threading
 import json
 import re
 import socket
-from colorama import Fore
 from Table import Table
 
 PORT = 55151
@@ -58,13 +57,9 @@ def prompt():
             if len(cmd) < 3:
                 print("Too few arguments for msg")
                 continue
-            # add_link(cmd[1], int(cmd[2]))
-            print("add link")
-            # print("min " + str(table.min))
             table.add_link(cmd[1], int(cmd[2]))
         elif cmd[0] == "del":
-            del_link(cmd[1])
-            print("Run del")
+            table.del_link(cmd[1])
         elif cmd[0] == "trace":
             print("Run trace")
         elif cmd[0] == "status":
@@ -105,8 +100,19 @@ def treat_package(message):
 
 
 def read_file(startup_file):
-    print('read file')
-
+    while True:
+        line = startup_file.readline().replace("\n", "")
+        if len(line) == 0:
+            break
+        cmd = line.split()
+        
+        if cmd[0] == "add":
+            table.add_link(cmd[1], int(cmd[2]))
+            print("router " + cmd[1] + " with distance " + cmd[2] + " added")
+        else:
+            print('Command is not add command')
+    print('Finished reading file')
+    return
 
 def main():
 

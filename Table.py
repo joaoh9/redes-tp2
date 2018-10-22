@@ -1,17 +1,16 @@
 import time
 
-
 class Option:
-    def __init__(self, is_link, destination, distance, learned_from=None):
+    def __init__(self, destination, distance, is_link, learned_from=None):
         """
         Init a option for a route. It can be obtained by adding a link
         or learning from another router.
-        :param is_link: True if is obtained by adding a link, false otherwise.
-        :type is_link: bool
         :param destination: Router destination IP address.
         :type destination: str
         :param distance: Distance from local router to destination router.
         :type distance: int
+        :param is_link: True if is obtained by adding a link, false otherwise.
+        :type is_link: bool
         :param learned_from: Router destination IP address which was learned.
         :type learned_from: str
         """
@@ -20,13 +19,13 @@ class Option:
             self.distance = distance
             self.is_link = True
             self.timestamp = time.time()
-            self.learn_from = None
+            self.learned_from = None
         else:
             self.destination = destination
             self.distance = distance
             self.is_link = False
             self.timestamp = time.time()
-            self.learn_from = learned_from
+            self.learned_from = learned_from
 
 
 class Route:
@@ -94,6 +93,24 @@ class Table:
             self.routes[destination] = Route()
         self.routes[destination].add_link(destination, distance)
 
+    def del_link(self, router):
+        if router not in self.routes:
+            print('Router ' + str(router) + ' not found')
+            return
+
+        
+        options = self.routes[router].options
+        for i in range(len(options)):
+            if options[i].is_link is True:
+                del options[i]
+                print('Deletion completed')
+                if len(options) is 0:
+                    del self.routes[router]
+                return
+        
+        print('Router is not direct link')
+        
+        
     def get_destination_by_routes(self, destination):
         """
         Return router address to send the next packet and update to next router in case of tie on its distances.
@@ -134,8 +151,8 @@ class Table:
                     is_link_max_len = len(str(option.is_link))
                 if len(str(option.timestamp)) > timestamp_max_len:
                     timestamp_max_len = len(str(option.timestamp))
-                if len(str(option.learn_from)) > learned_from_max_len:
-                    learned_from_max_len = len(str(option.learn_from))
+                if len(str(option.learned_from)) > learned_from_max_len:
+                    learned_from_max_len = len(str(option.learned_from))
             string += "┌─" + (destination_max_len + 3) * "─" + (distance_max_len + 3) * "─" + (
                     is_link_max_len + 3) * "─" + (timestamp_max_len + 3) * "─" + (
                               learned_from_max_len + 1) * "─" + "┐\n"
@@ -150,8 +167,8 @@ class Table:
                     option.is_link) + (is_link_max_len - len(str(option.is_link))) * " " + " │ " + (
                                   timestamp_max_len - len(str(option.timestamp))) * " " + str(
                     option.timestamp) + " │ " + (
-                                  learned_from_max_len - len(str(option.learn_from))) * " " + str(
-                    option.learn_from) + " │\n"
+                                  learned_from_max_len - len(str(option.learned_from))) * " " + str(
+                    option.learned_from) + " │\n"
             string += "└─" + (destination_max_len + 3) * "─" + (distance_max_len + 3) * "─" + (
                     is_link_max_len + 3) * "─" + (timestamp_max_len + 3) * "─" + (
                               learned_from_max_len + 1) * "─" + "┘\n"
