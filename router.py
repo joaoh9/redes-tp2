@@ -90,18 +90,30 @@ def prompt():
         else:
             print("Command not found")
 
+def treat_update(packet):
+    payload = packet['payload']
+    for key in payload:
+        print('treat updating: ' + key + ' ' + str(payload[key]))
+        table.add_learned_router(key, int(payload[key]), packet['source'])
+        print('payload ' + str(payload))
+
+
+def get_treater(type):
+    treat_function = {
+        #"data": treat_data,
+        "update": treat_update
+    }
+    return treat_function.get(type)
+
 
 def recv_packet():
     while True:
         msg, ip = SOCK.recvfrom(1024)
         if len(msg) > 0:
             msg = bytes.decode(msg)
-            message = json.loads(msg)
-            treat_packet(message)
-
-
-def treat_packet(packet):
-    print(packet['type'])
+            packet = json.loads(msg)
+            treat_function = get_treater(packet["type"])
+            treat_function(packet)
 
 
 def update(period):

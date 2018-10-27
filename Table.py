@@ -32,7 +32,7 @@ class Route:
         self.is_link = is_link
         self.options = []
 
-    def add_link(self, destination, distance):
+    def add_link(self, destination, distance, learned_from=None):
         """
         Add a link on the router to another router
         :param destination: Router destination IP address.
@@ -45,7 +45,7 @@ class Route:
                 print("Router " + destination + " already added.")
                 return
 
-        option = Option(destination=destination, distance=distance)
+        option = Option(destination=destination, distance=distance, learned_from=learned_from)
         if len(self.options) == 0:
             self.options.append(option)
             self.tie = 1
@@ -89,6 +89,14 @@ class Table:
         if destination not in self.routes:
             self.routes[destination] = Route(is_link=True)
         self.routes[destination].add_link(destination, distance)
+
+    def add_learned_router(self, destination, distance, learned_from):
+        """
+        Store information about a learned router coming from an update message
+        """
+        if destination not in self.routes:
+            self.routes[destination] = Route()
+        self.routes[destination].add_link(destination, distance, learned_from)
 
     def del_link(self, router):
         if router not in self.routes:
