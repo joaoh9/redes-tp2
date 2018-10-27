@@ -106,7 +106,6 @@ def treat_packet(packet):
 
 def update(period):
     threading.Timer(period, update, kwargs={'period': period}).start()
-    print('update function')
     destinations = []
     
     for key in table.routes:
@@ -123,11 +122,8 @@ def update(period):
                 distance = faster_route.distance
 
                 payload[destination] = distance
-
-        print('creating update package')
         update_packet = create_update_packet(destinations[i], payload)
         send_packet(update_packet)
-        print('update packet sent')
 
 
 def read_file(startup_file):
