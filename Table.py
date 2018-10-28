@@ -96,7 +96,7 @@ class Table:
         """
         if destination not in self.routes:
             self.routes[destination] = Route()
-        self.routes[destination].add_link(destination, distance, learned_from)
+        self.routes[destination].add_link(learned_from, distance, learned_from)
 
     def del_link(self, router):
         if router not in self.routes:
