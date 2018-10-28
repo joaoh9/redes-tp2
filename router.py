@@ -4,6 +4,7 @@ import json
 import re
 import socket
 from Table import Table
+import time
 
 PORT = 55151
 
@@ -25,6 +26,9 @@ def create_data_packet(destination, message):
         "payload": message
     }
 
+def treat_data(packet):
+    print(packet['payload'])
+
 
 def create_update_packet(destination, payload):
     return {
@@ -33,6 +37,22 @@ def create_update_packet(destination, payload):
         "destination": destination,
         "payload": payload
     }
+
+def treat_update(packet):
+    payload = packet['payload']
+    source = packet['source']
+    distance_from_source = table.routes[source].min
+    for key in payload:
+        table.add_learned_router(key, distance_from_source + int(payload[key]), packet['source'])
+
+
+def get_treater(type):
+    treat_function = {
+        "data": treat_data,
+        "update": treat_update
+        #Q"trace": treat_trace
+    }
+    return treat_function.get(type)
 
 
 def send_packet(packet):
@@ -46,6 +66,15 @@ def send_packet(packet):
     message = bytes(json_packet, 'utf-8')
     SOCK.sendto(message, (destination, PORT))
     print(packet['type'] + ' packet sent')
+
+def recv_packet():
+    while True:
+        msg, ip = SOCK.recvfrom(1024)
+        if len(msg) > 0:
+            msg = bytes.decode(msg)
+            packet = json.loads(msg)
+            treat_function = get_treater(packet["type"])
+            treat_function(packet)
 
 
 def prompt():
@@ -90,52 +119,27 @@ def prompt():
         else:
             print("Command not found")
 
-def treat_update(packet):
-    payload = packet['payload']
-    for key in payload:
-        print('treat updating: ' + key + ' ' + str(payload[key]))
-        table.add_learned_router(key, int(payload[key]), packet['source'])
-        print('payload ' + str(payload))
-
-
-def get_treater(type):
-    treat_function = {
-        #"data": treat_data,
-        "update": treat_update
-    }
-    return treat_function.get(type)
-
-
-def recv_packet():
-    while True:
-        msg, ip = SOCK.recvfrom(1024)
-        if len(msg) > 0:
-            msg = bytes.decode(msg)
-            packet = json.loads(msg)
-            treat_function = get_treater(packet["type"])
-            treat_function(packet)
-
 
 def update(period):
-    threading.Timer(period, update, kwargs={'period': period}).start()
-    destinations = []
-    
-    for key in table.routes:
-        print(key)
-        if table.routes[key].is_link is True:
-            destinations.append(key)
-
-    for i in range(len(destinations)):
-        payload = {}
+    while True:
+        destinations = []
         for key in table.routes:
-            if key != destinations[i]:
-                faster_route = table.routes[key].options[0] # sempre o primeiro indice tem a rota mais curta
-                destination = faster_route.destination
-                distance = faster_route.distance
+            print(key)
+            if table.routes[key].is_link is True:
+                destinations.append(key)
 
-                payload[destination] = distance
-        update_packet = create_update_packet(destinations[i], payload)
-        send_packet(update_packet)
+        for i in range(len(destinations)):
+            payload = {}
+            for key in table.routes:
+                if key != destinations[i]:
+                    faster_route = table.routes[key].options[0] # sempre o primeiro indice tem a rota mais curta
+                    destination = faster_route.destination
+                    distance = faster_route.distance
+
+                    payload[destination] = distance
+            update_packet = create_update_packet(destinations[i], payload)
+            send_packet(update_packet)
+        time.sleep(period)
 
 
 def read_file(startup_file):
@@ -181,6 +185,9 @@ def main():
     
     t_prompt = threading.Thread(target=prompt)
     t_prompt.start()
+
+    t_update = threading.Thread(target=update, kwargs={'period': period})
+    t_update.start()
 
     update(period)
 
