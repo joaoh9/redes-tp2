@@ -1,5 +1,6 @@
 import time
 
+
 class Option:
     def __init__(self, destination, distance, learned_from=None):
         """
@@ -113,8 +114,7 @@ class Table:
                     del self.routes[router]
                     return
         print('Router is not direct link')
-        
-        
+
     def get_destination_by_routes(self, destination):
         """
         Return router address to send the next packet and update to next router in case of tie on its distances.

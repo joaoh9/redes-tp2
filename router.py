@@ -38,10 +38,17 @@ def create_update_packet(destination, payload):
         "payload": payload
     }
 
+
 def treat_update(packet):
     payload = packet['payload']
     source = packet['source']
+
+    if source not in table.routes:
+        print("There is not " + source + " in table.")
+        return
+
     distance_from_source = table.routes[source].min
+
     for key in payload:
         table.add_learned_router(key, distance_from_source + int(payload[key]), packet['source'])
 
@@ -67,12 +74,14 @@ def send_packet(packet):
     SOCK.sendto(message, (destination, PORT))
     print(packet['type'] + ' packet sent')
 
+
 def recv_packet():
     while True:
         msg, ip = SOCK.recvfrom(1024)
         if len(msg) > 0:
             msg = bytes.decode(msg)
             packet = json.loads(msg)
+            print(str(packet))
             treat_function = get_treater(packet["type"])
             treat_function(packet)
 
@@ -92,12 +101,12 @@ def prompt():
                 continue
             table.add_link(cmd[1], int(cmd[2]))
         elif cmd[0] == "del":
-            if len(cmd) < 3:
+            if len(cmd) < 2:
                 print("Too few arguments")
                 continue
             table.del_link(cmd[1])
         elif cmd[0] == "trace":
-            if len(cmd) < 3:
+            if len(cmd) < 2:
                 print("Too few arguments")
                 continue
             print("Run trace")
@@ -188,8 +197,6 @@ def main():
 
     t_update = threading.Thread(target=update, kwargs={'period': period})
     t_update.start()
-
-    update(period)
 
     t_prompt.join()
     
