@@ -72,7 +72,6 @@ def send_packet(packet):
     json_packet = json.dumps(packet)
     message = bytes(json_packet, 'utf-8')
     SOCK.sendto(message, (destination, PORT))
-    print(packet['type'] + ' packet sent')
 
 
 def recv_packet():
@@ -81,7 +80,6 @@ def recv_packet():
         if len(msg) > 0:
             msg = bytes.decode(msg)
             packet = json.loads(msg)
-            print(str(packet))
             treat_function = get_treater(packet["type"])
             treat_function(packet)
 
@@ -133,7 +131,6 @@ def update(period):
     while True:
         destinations = []
         for key in table.routes:
-            print(key)
             if table.routes[key].is_link is True:
                 destinations.append(key)
 
@@ -160,9 +157,6 @@ def read_file(startup_file):
         
         if cmd[0] == "add":
             table.add_link(cmd[1], int(cmd[2]))
-            print("router " + cmd[1] + " with distance " + cmd[2] + " added")
-        else:
-            print('Command is not add command')
     print('Finished reading file')
     return
 

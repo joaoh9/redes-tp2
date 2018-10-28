@@ -43,7 +43,6 @@ class Route:
         """
         for i in range(len(self.options)):
             if self.options[i].destination == destination:
-                print("Router " + destination + " already added.")
                 return
 
         option = Option(destination=destination, distance=distance, learned_from=learned_from)
