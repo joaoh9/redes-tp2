@@ -64,13 +64,8 @@ class Route:
                 self.tie = self.tie + 1
                 self.next = self.next + 1
             elif self.min < distance:
-                inserted = False
-                for i in range(len(self.options)):
-                    if self.min < option.distance:
-                        self.options.insert(i, option)
-                        inserted = True
-                if not inserted:
-                    self.options.append(option)
+                self.options.append(option)
+                self.options.sort(key=lambda op: op.distance)
 
 
 class Table:

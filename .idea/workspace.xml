@@ -4,8 +4,6 @@
     <list default="true" id="bee022dc-5264-4306-be86-b2bf7ac59bdd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Table.py" beforeDir="false" afterPath="$PROJECT_DIR$/Table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/startup_files2/r3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/startup_files2/r3.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,14 +47,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="1417" />
-          <entry key="py" value="10961" />
+          <entry key="py" value="11044" />
           <entry key="txt" value="292" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="292" />
-          <entry key="Python" value="12164" />
+          <entry key="Python" value="12247" />
           <entry key="Scratch" value="214" />
         </counts>
       </usages-collector>
@@ -65,11 +63,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/router.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="46" column="54" lean-forward="true" selection-start-line="46" selection-start-column="54" selection-end-line="46" selection-end-column="54" />
+            <state relative-caret-position="252">
+              <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -77,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib/python3.7/json/__init__.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Table.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="344" selection-start-line="344" selection-end-line="344" />
+            <state relative-caret-position="334">
+              <caret line="55" column="32" lean-forward="true" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -91,15 +89,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="84">
               <caret line="4" selection-start-line="4" selection-end-line="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Table.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-539">
-              <caret line="55" column="25" lean-forward="true" selection-start-line="51" selection-start-column="17" selection-end-line="55" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -149,15 +138,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/startup_files2/r7.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -190,6 +170,7 @@
       <find>add_link</find>
       <find>add_lear</find>
       <find>distance_from_source = table.routes[source].min</find>
+      <find>distance</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -206,9 +187,9 @@
         <option value="$PROJECT_DIR$/startup_files2/r5.txt" />
         <option value="$PROJECT_DIR$/startup_files2/r6.txt" />
         <option value="$PROJECT_DIR$/startup_files2/r7.txt" />
-        <option value="$PROJECT_DIR$/Table.py" />
         <option value="$PROJECT_DIR$/startup_files2/r3.txt" />
         <option value="$PROJECT_DIR$/router.py" />
+        <option value="$PROJECT_DIR$/Table.py" />
       </list>
     </option>
   </component>
@@ -276,7 +257,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Router 3/C">
+  <component name="RunManager" selected="Python.Router 7/G">
     <configuration name="Router 1/A" type="PythonConfigurationType" factoryName="Python">
       <module name="redes-tp2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -480,14 +461,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="29" width="1366" height="739" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48818898" visible="true" weight="0.18554397" />
       <window_info id="Structure" order="1" sideWeight="0.511811" side_tool="true" weight="0.18554397" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" x="0" y="71" width="1366" height="697" id="Run" order="2" sideWeight="0.49850968" type="WINDOWED" visible="true" weight="0.41414142" />
+      <window_info active="true" anchor="bottom" x="0" y="95" width="1366" height="673" id="Run" order="2" sideWeight="0.49850968" type="WINDOWED" visible="true" weight="0.41414142" />
       <window_info anchor="bottom" x="0" y="71" width="1366" height="697" id="Debug" order="3" weight="0.35858586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -627,17 +607,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Table.py">
+    <entry file="file://$PROJECT_DIR$/router.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-539">
-          <caret line="55" column="25" lean-forward="true" selection-start-line="51" selection-start-column="17" selection-end-line="55" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/startup_files2/r2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="252">
+          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -645,6 +621,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/startup_files2/r2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
@@ -683,13 +666,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/router.py">
+    <entry file="file://$PROJECT_DIR$/Table.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="46" column="54" lean-forward="true" selection-start-line="46" selection-start-column="54" selection-end-line="46" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="334">
+          <caret line="55" column="32" lean-forward="true" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
         </state>
       </provider>
     </entry>
