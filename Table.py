@@ -13,16 +13,10 @@ class Option:
         :param learned_from: Router destination IP address which was learned.
         :type learned_from: str
         """
-        if learned_from is None:
-            self.destination = destination
-            self.distance = distance
-            self.timestamp = time.time()
-            self.learned_from = learned_from
-        else:
-            self.destination = destination
-            self.distance = distance
-            self.timestamp = time.time()
-            self.learned_from = learned_from
+        self.destination = destination
+        self.distance = distance
+        self.timestamp = time.time()
+        self.learned_from = learned_from
 
 
 class Route:
@@ -32,6 +26,32 @@ class Route:
         self.next = None
         self.is_link = is_link
         self.options = []
+    
+    def add_learned_router(self, destination, distance, learned_from):
+        option = Option(destination=destination, distance=distance, learned_from=learned_from)
+        if len(self.options) == 0:
+            self.options.append(option)
+            self.tie = 1
+            self.min = distance
+            self.next = 0
+        elif len(self.options) > 0:
+            for i in range(len(self.options)):
+                if self.options[i].destination == destination and self.options[i].learned_from == learned_from:
+                    self.options[i] = option
+                    return
+            if self.min > distance:
+                self.options.insert(0, option)
+                self.tie = 1
+                self.min = distance
+                self.next = 0
+            elif self.min == distance:
+                self.options.insert(0, option)
+                self.tie = self.tie + 1
+                self.next = self.next + 1
+            elif self.min < distance:
+                self.options.append(option)
+                self.options.sort(key=lambda op: op.distance)
+
 
     def add_link(self, destination, distance, learned_from=None):
         """
@@ -52,8 +72,8 @@ class Route:
             self.min = distance
             self.next = 0
         elif len(self.options) > 0:
-            print(str(self.min))
-            print(str(distance))
+            print('min: ' + str(self.min))
+            print('distance: ' + str(distance))
             if self.min > distance:
                 self.options.insert(0, option)
                 self.tie = 1
@@ -91,7 +111,7 @@ class Table:
         """
         if destination not in self.routes:
             self.routes[destination] = Route()
-        self.routes[destination].add_link(learned_from, distance, learned_from)
+        self.routes[destination].add_learned_router(learned_from, distance, learned_from)
 
     def del_link(self, router):
         if router not in self.routes:
