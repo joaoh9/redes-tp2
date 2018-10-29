@@ -50,7 +50,7 @@ def treat_update(packet):
 
     distance_from_source = table.routes[source].min
     
-    print('got this payload: ' + str(payload) + ' from :' + source)
+    # print('got this payload: ' + str(payload) + ' from :' + source)
     for key in payload:
         if key != ADDR:
             table.add_learned_router(key, distance_from_source + int(payload[key]), source)
@@ -141,30 +141,16 @@ def update(period):
             payload = {}
             for key in table.routes:
                 faster_route = table.routes[key].options[0]
-                print(' opt.learned_from: ' + str(faster_route.learned_from) + ' dest: ' + dest)
-                print("Result: " + str(faster_route.learned_from != dest))
+                # print(' opt.learned_from: ' + str(faster_route.learned_from) + ' dest: ' + dest)
+                # print("Result: " + str(faster_route.learned_from != dest))
                 if faster_route.destination != dest and faster_route.learned_from != dest and key != dest:
                     payload[key] = faster_route.distance
 
-            print('payload: ' + str(payload) + ' to : ' + dest)
+            # print('payload: ' + str(payload) + ' to : ' + dest)
             update_packet = create_update_packet(dest, payload)
             send_packet(update_packet)
-
-     #   for dest in destinations:
-    #        print('dest: ' + dest)
-    #        payload = {}
-    #        for key in table.routes:
-    #            router_options = table.routes[key].options
-    #            for opt in router_options:
-    #                if opt.destination != dest and key != #dest:
-    #                    if key not in payload:
-    #                        payload[key] = [opt.distance]
-    #                    payload[key].append(opt.distance)
-    #                    print('payload: ' + str(payload))
-    #        update_packet = create_update_packet(dest, #payload)
-    #        send_packet(update_packet)
                         
-        print(table.to_string())
+        # print(table.to_string())
         time.sleep(period)
 
 

@@ -52,7 +52,6 @@ class Route:
                 self.options.append(option)
                 self.options.sort(key=lambda op: op.distance)
 
-
     def add_link(self, destination, distance, learned_from=None):
         """
         Add a link on the router to another router
@@ -114,20 +113,24 @@ class Table:
         self.routes[destination].add_learned_router(learned_from, distance, learned_from)
 
     def del_link(self, router):
+        """
+        Delete a link and all routes learned by it.
+        :param router: Router address do to be deleted.
+        :type router: str
+        """
         if router not in self.routes:
-            print('Router ' + str(router) + ' not found')
-            return
-
-        if self.routes[router].is_link is True:
-            options = self.routes[router].options
-            for i in range(len(options)):
-                if options[i].destination == router:
-                    del options[i]
-                    print('Deletion completed')
-                if len(options) is 0:
-                    del self.routes[router]
-                    return
-        print('Router is not direct link')
+            print('Router ' + str(router) + ' not found.')
+        elif self.routes[router].is_link:
+            print("Router is link.")
+            for addr, route in self.routes.items():
+                for indexOption, option in enumerate(route.options):
+                    if option.destination == router:
+                        del route.options[indexOption]
+                if len(route.options) == 0:
+                    del self.routes[addr]
+            print("Delete complete.")
+        else:
+            print("Router is not a direct link.")
 
     def get_destination_by_routes(self, destination):
         """
