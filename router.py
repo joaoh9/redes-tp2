@@ -42,15 +42,18 @@ def create_update_packet(destination, payload):
 def treat_update(packet):
     payload = packet['payload']
     source = packet['source']
-
+    #print('update coming fron: ', source)
+    #print('update payload: ', payload)
     if source not in table.routes:
         print("There is not " + source + " in table.")
         return
 
     distance_from_source = table.routes[source].min
-
+    
+    print('got this payload: ' + str(payload) + ' from :' + source)
     for key in payload:
-        table.add_learned_router(key, distance_from_source + int(payload[key]), packet['source'])
+        if key != ADDR:
+            table.add_learned_router(key, distance_from_source + int(payload[key]), source)
 
 
 def get_treater(type):
@@ -134,17 +137,34 @@ def update(period):
             if table.routes[key].is_link is True:
                 destinations.append(key)
 
-        for i in range(len(destinations)):
+        for dest in destinations:
             payload = {}
             for key in table.routes:
-                if key != destinations[i]:
-                    faster_route = table.routes[key].options[0] # sempre o primeiro indice tem a rota mais curta
-                    destination = faster_route.destination
-                    distance = faster_route.distance
+                faster_route = table.routes[key].options[0]
+                print(' opt.learned_from: ' + str(faster_route.learned_from) + ' dest: ' + dest)
+                print("Result: " + str(faster_route.learned_from != dest))
+                if faster_route.destination != dest and faster_route.learned_from != dest and key != dest:
+                    payload[key] = faster_route.distance
 
-                    payload[destination] = distance
-            update_packet = create_update_packet(destinations[i], payload)
+            print('payload: ' + str(payload) + ' to : ' + dest)
+            update_packet = create_update_packet(dest, payload)
             send_packet(update_packet)
+
+     #   for dest in destinations:
+    #        print('dest: ' + dest)
+    #        payload = {}
+    #        for key in table.routes:
+    #            router_options = table.routes[key].options
+    #            for opt in router_options:
+    #                if opt.destination != dest and key != #dest:
+    #                    if key not in payload:
+    #                        payload[key] = [opt.distance]
+    #                    payload[key].append(opt.distance)
+    #                    print('payload: ' + str(payload))
+    #        update_packet = create_update_packet(dest, #payload)
+    #        send_packet(update_packet)
+                        
+        print(table.to_string())
         time.sleep(period)
 
 
