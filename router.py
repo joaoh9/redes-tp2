@@ -166,6 +166,10 @@ def read_file(startup_file):
     print('Finished reading file')
     return
 
+#
+# def remove_outdated_routes(period):
+#     time.sleep(period)
+
 
 def main():
     

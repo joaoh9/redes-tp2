@@ -1,4 +1,5 @@
 import time
+import random
 
 
 class Option:
@@ -23,34 +24,44 @@ class Route:
     def __init__(self, is_link=False):
         self.tie = None
         self.min = None
-        self.next = None
         self.is_link = is_link
         self.options = []
+
+    def sort_options(self):
+        """
+        Sort options by distance and count the number os options with the shortest distance.
+        """
+        if len(self.options) == 0:
+            self.tie = None
+            self.min = None
+        else:
+            self.options.sort(key=lambda option: option.distance)
+            self.min = self.options[0].distance
+            self.tie = sum(option.distance == self.min for option in self.options)
     
     def add_learned_router(self, destination, distance, learned_from):
+        """
+        Add a learned router from update.
+        :param destination: Router destination IP address.
+        :type destination: str
+        :param distance: Distance from local router to destination router.
+        :type distance: int
+        :param learned_from: Router from which the route was learned.
+        :type learned_from: str
+        """
         option = Option(destination=destination, distance=distance, learned_from=learned_from)
         if len(self.options) == 0:
             self.options.append(option)
             self.tie = 1
             self.min = distance
-            self.next = 0
         elif len(self.options) > 0:
             for i in range(len(self.options)):
                 if self.options[i].destination == destination and self.options[i].learned_from == learned_from:
                     self.options[i] = option
+                    self.sort_options()
                     return
-            if self.min > distance:
-                self.options.insert(0, option)
-                self.tie = 1
-                self.min = distance
-                self.next = 0
-            elif self.min == distance:
-                self.options.insert(0, option)
-                self.tie = self.tie + 1
-                self.next = self.next + 1
-            elif self.min < distance:
-                self.options.append(option)
-                self.options.sort(key=lambda op: op.distance)
+            self.options.append(option)
+            self.sort_options()
 
     def add_link(self, destination, distance, learned_from=None):
         """
@@ -62,6 +73,7 @@ class Route:
         """
         for i in range(len(self.options)):
             if self.options[i].destination == destination:
+                print("Router already added.")
                 return
 
         option = Option(destination=destination, distance=distance, learned_from=learned_from)
@@ -69,22 +81,9 @@ class Route:
             self.options.append(option)
             self.tie = 1
             self.min = distance
-            self.next = 0
         elif len(self.options) > 0:
-            print('min: ' + str(self.min))
-            print('distance: ' + str(distance))
-            if self.min > distance:
-                self.options.insert(0, option)
-                self.tie = 1
-                self.min = distance
-                self.next = 0
-            elif self.min == distance:
-                self.options.insert(0, option)
-                self.tie = self.tie + 1
-                self.next = self.next + 1
-            elif self.min < distance:
-                self.options.append(option)
-                self.options.sort(key=lambda op: op.distance)
+            self.options.append(option)
+            self.sort_options()
 
 
 class Table:
@@ -128,6 +127,8 @@ class Table:
                         del route.options[indexOption]
                 if len(route.options) == 0:
                     del self.routes[addr]
+                else:
+                    self.routes[addr].sort_options()
             print("Delete complete.")
         else:
             print("Router is not a direct link.")
@@ -140,10 +141,8 @@ class Table:
         :return: Router IP address to send the next packet.
         :rtype: str
         """
-        next = self.routes[destination].next
-        addr = self.routes[destination].options[next].destination
-        tie = self.routes[destination].tie
-        self.routes[destination].next = (next + 1) % tie
+        index = random.randrange(self.routes[destination].tie)
+        addr = self.routes[destination].options[index].destination
         return addr
 
     def to_string(self):
@@ -157,7 +156,6 @@ class Table:
             string += "Routes to " + addr + "\n"
             string += "Tie on first " + str(route.tie) + " options\n"
             string += "Minimum distance: " + str(route.min) + "\n"
-            string += "Next router to send: " + str(route.next) + "\n"
             destination_max_len = len("Destination")
             distance_max_len = len("Distance")
             timestamp_max_len = len("Timestamp")
