@@ -1,5 +1,6 @@
 import time
 import random
+from typing import Dict, List
 
 
 class Option:
@@ -21,6 +22,8 @@ class Option:
 
 
 class Route:
+    options: List[Option]
+
     def __init__(self, is_link=False):
         self.tie = None
         self.min = None
@@ -87,6 +90,8 @@ class Route:
 
 
 class Table:
+    routes: Dict[str, Route]
+
     def __init__(self):
         self.routes = {}
 
@@ -121,14 +126,15 @@ class Table:
             print('Router ' + str(router) + ' not found.')
         elif self.routes[router].is_link:
             print("Router is link.")
-            for addr, route in self.routes.items():
-                for indexOption, option in enumerate(route.options):
+            for key in self.routes.keys():
+                for indexOption, option in enumerate(self.routes[key].options):
                     if option.destination == router:
-                        del route.options[indexOption]
-                if len(route.options) == 0:
-                    del self.routes[addr]
+                        del self.routes[key].options[indexOption]
+                # if len(self.routes[key].options) == 0:
+                #     del self.routes[key]
                 else:
-                    self.routes[addr].sort_options()
+                    self.routes[key].sort_options()
+            self.routes = {addr: route for addr, route in self.routes.items() if len(route.options) > 0}
             print("Delete complete.")
         else:
             print("Router is not a direct link.")

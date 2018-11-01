@@ -16,18 +16,20 @@
     <session id="1454917724">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="7" />
+          <entry key="project.open.time.23" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="2" />
           <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.7" value="2" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="html" value="1" />
-          <entry key="py" value="9" />
+          <entry key="py" value="10" />
           <entry key="r1" value="1" />
           <entry key="r2" value="1" />
           <entry key="r3" value="1" />
@@ -43,21 +45,21 @@
           <entry key="Bash" value="5" />
           <entry key="HTML" value="1" />
           <entry key="PLAIN_TEXT" value="21" />
-          <entry key="Python" value="7" />
+          <entry key="Python" value="8" />
           <entry key="Scratch" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="1634" />
-          <entry key="py" value="11491" />
+          <entry key="Python Console" value="1660" />
+          <entry key="py" value="13620" />
           <entry key="txt" value="292" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="292" />
-          <entry key="Python" value="12911" />
+          <entry key="Python" value="15066" />
           <entry key="Scratch" value="214" />
         </counts>
       </usages-collector>
@@ -69,8 +71,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/router.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-954">
-              <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+            <state relative-caret-position="303">
+              <caret line="182" column="46" lean-forward="true" selection-start-line="182" selection-start-column="46" selection-end-line="182" selection-end-column="46" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -81,8 +83,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Table.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="127" column="41" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="41" />
+            <state relative-caret-position="231">
+              <caret line="132" column="35" lean-forward="true" selection-start-line="132" selection-start-column="35" selection-end-line="132" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+                <marker date="1541032967109" expanded="true" signature="1360:1370" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -115,13 +121,19 @@
       <find>create_update_packet</find>
       <find>treat_data</find>
       <find>treat_up</find>
-      <find>add_link</find>
       <find>add_lear</find>
       <find>distance_from_source = table.routes[source].min</find>
       <find>distance</find>
       <find>del_link</find>
       <find>print</find>
+      <find>item</find>
       <find>got this</find>
+      <find>next</find>
+      <find>delete</find>
+      <find>items</find>
+      <find>option</find>
+      <find>enumerate</find>
+      <find>add_link</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -145,42 +157,21 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1157" />
-    <option name="width" value="1356" />
-    <option name="height" value="554" />
+    <option name="y" value="29" />
+    <option name="width" value="1366" />
+    <option name="height" value="739" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
               <item name="redes-tp2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redes-tp2" type="462c0819:PsiDirectoryNode" />
-              <item name="init" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redes-tp2" type="462c0819:PsiDirectoryNode" />
-              <item name="startup_files" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redes-tp2" type="462c0819:PsiDirectoryNode" />
-              <item name="startup_files2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redes-tp2" type="462c0819:PsiDirectoryNode" />
-              <item name="startup_files3" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redes-tp2" type="b2602c69:ProjectViewProjectNode" />
@@ -195,6 +186,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -504,22 +496,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1366" y="0" width="1366" height="768" extended-state="6" />
+    <frame x="0" y="29" width="1366" height="739" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4842615" visible="true" weight="0.18364312" />
-      <window_info id="Structure" order="1" sideWeight="0.5157385" side_tool="true" weight="0.18438661" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48264462" weight="0.18364312" />
+      <window_info id="Structure" order="1" sideWeight="0.5173554" side_tool="true" visible="true" weight="0.18364312" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" x="0" y="71" width="1366" height="697" id="Run" order="2" sideWeight="0.49850968" type="WINDOWED" visible="true" weight="0.41414142" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3289256" />
+      <window_info active="true" anchor="bottom" x="1366" y="42" width="1366" height="726" id="Run" order="2" sideWeight="0.49850968" type="WINDOWED" visible="true" weight="0.41414142" />
       <window_info anchor="bottom" x="0" y="71" width="1366" height="697" id="Debug" order="3" weight="0.35858586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49925485" weight="0.32828283" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" x="0" y="83" width="1366" height="685" id="Terminal" order="8" sideWeight="0.49776453" weight="0.21322314" />
+      <window_info anchor="bottom" x="1366" y="42" width="1366" height="726" id="Terminal" order="8" sideWeight="0.49776453" type="WINDOWED" visible="true" weight="0.21293375" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5014903" side_tool="true" weight="0.22222222" />
-      <window_info anchor="bottom" x="0" y="71" width="1366" height="697" id="Python Console" order="10" sideWeight="0.7488823" weight="0.329653" />
+      <window_info anchor="bottom" x="0" y="71" width="1366" height="697" id="Python Console" order="10" sideWeight="0.7488823" weight="0.45454547" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -705,8 +697,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/router.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-954">
-          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+        <state relative-caret-position="303">
+          <caret line="182" column="46" lean-forward="true" selection-start-line="182" selection-start-column="46" selection-end-line="182" selection-end-column="46" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -715,8 +707,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Table.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="127" column="41" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="41" />
+        <state relative-caret-position="231">
+          <caret line="132" column="35" lean-forward="true" selection-start-line="132" selection-start-column="35" selection-end-line="132" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <marker date="1541032967109" expanded="true" signature="1360:1370" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -166,9 +166,26 @@ def read_file(startup_file):
     print('Finished reading file')
     return
 
-#
-# def remove_outdated_routes(period):
-#     time.sleep(period)
+
+def remove_outdated_routes(period):
+    """
+    Remove all options that have not been updated in 4 periods.
+    :param period: Time in seconds.
+    :type period: float
+    """
+    time.sleep(period)
+    now: float = time.time()
+
+    table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
+
+    for key in table.routes.keys():
+        for indexOption, option in enumerate(table.routes[key].options):
+            if (now - option.timestamp) >= (4 * period):
+                print("Excluindo")
+                del table.routes[key].options[indexOption]
+                # if len(table.routes[key].options) == 0:
+                #     del table.routes[key]
+    table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
 
 
 def main():
@@ -201,6 +218,9 @@ def main():
 
     t_update = threading.Thread(target=update, kwargs={'period': period})
     t_update.start()
+
+    t_remove_outdated_routes = threading.Thread(target=remove_outdated_routes, kwargs={'period': period})
+    t_remove_outdated_routes.start()
 
     t_prompt.join()
     
