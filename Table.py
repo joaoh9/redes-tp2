@@ -130,10 +130,10 @@ class Table:
                 for indexOption, option in enumerate(self.routes[key].options):
                     if option.destination == router:
                         del self.routes[key].options[indexOption]
+                        self.routes[key].sort_options()
                 # if len(self.routes[key].options) == 0:
                 #     del self.routes[key]
-                else:
-                    self.routes[key].sort_options()
+                # else:
             self.routes = {addr: route for addr, route in self.routes.items() if len(route.options) > 0}
             print("Delete complete.")
         else:

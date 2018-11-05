@@ -173,19 +173,20 @@ def remove_outdated_routes(period):
     :param period: Time in seconds.
     :type period: float
     """
-    time.sleep(period)
-    now: float = time.time()
+    while True:
+        time.sleep(period)
+        # print("Tentando remover")
+        now: float = time.time()
 
-    table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
+        table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
 
-    for key in table.routes.keys():
-        for indexOption, option in enumerate(table.routes[key].options):
-            if (now - option.timestamp) >= (4 * period):
-                print("Excluindo")
-                del table.routes[key].options[indexOption]
-                # if len(table.routes[key].options) == 0:
-                #     del table.routes[key]
-    table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
+        for key in table.routes.keys():
+            for indexOption, option in enumerate(table.routes[key].options):
+                if (now - option.timestamp) >= (4 * period) and option.learned_from is not None:
+                    # print("Excluindo")
+                    del table.routes[key].options[indexOption]
+                    table.routes[key].sort_options()
+        table.routes = {addr: route for addr, route in table.routes.items() if len(route.options) > 0}
 
 
 def main():
