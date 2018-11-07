@@ -11,6 +11,7 @@ import argparse
 PORT = 55151
 MAX_LOOP_SIZE = 20
 
+
 def read_file(startup_file):
     """
     Read startup file and add links on table.

@@ -129,6 +129,7 @@ class Table:
             for key in self.routes.keys():
                 for indexOption, option in enumerate(self.routes[key].options):
                     if option.destination == router:
+                        self.routes[key].is_link = False
                         del self.routes[key].options[indexOption]
                         self.routes[key].sort_options()
                 # if len(self.routes[key].options) == 0:
