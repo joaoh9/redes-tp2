@@ -191,5 +191,5 @@ class Table:
             string += "└─" + (destination_max_len + 3) * "─" + (distance_max_len + 3) * "─" + (timestamp_max_len + 3) * "─" + (
                               learned_from_max_len + 1) * "─" + "┘\n"
         if string == "":
-            string += "There is no routes."
+            string += "There are no routes."
         return string

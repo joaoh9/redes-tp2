@@ -5,9 +5,11 @@ import re
 import socket
 from Table import Table
 import time
+import argparse
+
 
 PORT = 55151
-
+MAX_LOOP_SIZE = 20
 
 def read_file(startup_file):
     """
@@ -22,7 +24,7 @@ def read_file(startup_file):
         cmd = line.split()
         if cmd[0] == "add":
             table.add_link(cmd[1], int(cmd[2]))
-
+            
 
 def data_handler(packet):
     """
@@ -199,7 +201,7 @@ def update(period):
                 faster_route = table.routes[key].options[0]
                 # print(' opt.learned_from: ' + str(faster_route.learned_from) + ' dest: ' + dest)
                 # print("Result: " + str(faster_route.learned_from != dest))
-                if faster_route.destination != dest and faster_route.learned_from != dest and key != dest:
+                if faster_route.destination != dest and faster_route.learned_from != dest and key != dest and faster_route.distance < MAX_LOOP_SIZE:
                     payload[key] = faster_route.distance
 
             # print('payload: ' + str(payload) + ' to : ' + dest)
@@ -233,29 +235,39 @@ def remove_outdated_routes(period):
 
 
 def main():
-    
-    global SOCK
-    SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    SOCK.bind((sys.argv[1], PORT))
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("addr")
+    parser.add_argument("period")
+
+    parser.add_argument("--addr")
+    parser.add_argument("--update-period")
+    parser.add_argument("--startup-commands")
+
+    args = parser.parse_args()
+    
     global ADDR
-    ADDR = sys.argv[1]
+    ADDR = args.addr
     print("Address: " + ADDR)
 
-    period = int(sys.argv[2])
+    period = int(args.period)
     print("Period: " + str(period))
+
+    global SOCK
+    SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    SOCK.bind((ADDR, PORT))
 
     global table
     table = Table()
 
-    if len(sys.argv) > 3:
-        startup = sys.argv[3]
+    if (args.startup_commands):
+        startup = args.startup_commands
         startup_file = open(startup, "r")
         read_file(startup_file)
 
     t_recv = threading.Thread(target=recv_packet)
     t_recv.start()
-    
+
     t_prompt = threading.Thread(target=prompt)
     t_prompt.start()
 
